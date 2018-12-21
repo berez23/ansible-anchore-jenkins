@@ -4,3 +4,5 @@
   include: updatedpack.yml
 - name: Installing requriment -  Docker and Docker-compose 
   include: requriments.yml
+- name: configure docker 
+  include: docker.yml
