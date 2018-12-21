@@ -1,0 +1,35 @@
+ - name: Create a login user
+     user:
+      name: anchore
+      password: ''
+      groups:
+       - docker
+       - sudo
+      state: present
+      shell: /bin/bash
+      system: no
+      createhome: yes
+
+ - name: ansible set permission recursvely for a directory
+    file:
+      path: '{{ anchore_config_path }}'
+      state: directory
+      owner: '{{ anchore_config_perms.owner }}'
+      group: '{{ anchore_config_perms.group }}'
+      mode: '{{ anchore_config_perms.mode }}'
+      recurse: yes
+
+ - name: ansible set permission recursvely for docker-compose
+    file:
+      path: '{{ docker_remote_app_dir }}'
+      state: directory
+      owner: '{{ anchore_config_perms.owner }}'
+      group: '{{ anchore_config_perms.group }}'
+      mode: '{{ anchore_config_perms.mode }}'
+      recurse: yes
+
+ - name: Copy "docker" application folder
+   copy:
+   src: "{{ playbook_dir }}/../docker/"
+   dest: "{{ docker_remote_app_dir }}"
+

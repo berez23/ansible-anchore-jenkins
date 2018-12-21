@@ -1,0 +1,6 @@
+---
+# tasks file for provision/roles/hardening_debian
+- name: system upgrade 
+  include: updatedpack.yml
+- name: Installing requriment -  Docker and Docker-compose 
+  include: requriments.yml

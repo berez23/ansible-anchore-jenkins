@@ -1,0 +1,11 @@
+- name: Upgrading all packages (Ubuntu/Debian)
+  apt:
+    upgrade: dist
+
+- name: Install docker , docker compose
+  apt:
+    pkg:
+      - docker
+      - docker-compose
+    state: present
+
