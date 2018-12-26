@@ -1,4 +1,4 @@
-- name: Create a login user
+- name: Create anchore user
   user:
     name: anchore
     password: ''
@@ -10,34 +10,39 @@
     system: no
     createhome: yes
 
-- name: ansible set permission recursvely for a directory for anchore
-  file: 
-    path: '{{ anchore_config_path }}'
-    state: directory
-    owner: '{{ anchore_config_perms.owner }}'
-    group: '{{ anchore_config_perms.group }}'
-    mode: '{{ anchore_config_perms.mode }}'
-    recurse: yes
-
-- name: ansible set permission recursvely for docker-compose
+- name: Create directories for running Anchore and Docker compose
   file:
-    path: '{{ docker_remote_app_dir }}'
+    path: "{{ item }}"
     state: directory
     owner: '{{ anchore_config_perms.owner }}'
     group: '{{ anchore_config_perms.group }}'
     mode: '{{ anchore_config_perms.mode }}'
-    recurse: yes
+  with_items:
+    - '{{ anchore_remote_home }}'
+    - '{{ anchore_remote_config_path }}'
 
-- name: Copy "docker" application folder
-  copy:
-    src: "{{ playbook_dir }}/../docker/"
-    dest: "{{ docker_remote_app_dir }}"
-
-- name:  Upload default config file 
-  copy:
-    src: ../files/config.yaml
-    dest: '{{ anchore_config_path }}+{{ anchore_config_file }}'
+- name: Copy docker-compose.yml
+  template:
+    src: docker-compose.j2
+    dest: '{{ anchore_remote_home }}/{{ docker_remote_config_file }}'
     owner: '{{ anchore_config_perms.owner }}'
     group: '{{ anchore_config_perms.group }}'
     mode: '{{ anchore_config_perms.mode }}'
 
+- name: Copy anchore_config_file
+  template:
+    src: config.j2
+    dest: '{{ anchore_remote_config_path }}/{{ anchore_remote_config_file }}'
+    owner: '{{ anchore_config_perms.owner }}'
+    group: '{{ anchore_config_perms.group }}'
+    mode: '{{ anchore_config_perms.mode }}'
+
+- name: docker-compose via ansible docker_service
+  docker_service:
+    files:
+      - "{{ docker_remote_config_file }}"
+    project_src: "{{ anchore_remote_home }}"
+    project_name: "bbs-services"
+    pull: true
+    state: present
+    restarted: true

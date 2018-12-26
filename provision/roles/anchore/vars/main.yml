@@ -4,11 +4,9 @@
 anchore_config_perms:
   owner: anchore
   group: anchore
-  mode: '0640'
+  mode: '0740'
 
-anchore_config_path: '/home/anchore/aevolume/config/'
-anchore_config_file: 'config.yaml'
-
-
-docker_remote_app_dir: '/home/anchore/docker-compose'
-
+anchore_remote_home: '/home/anchore/aevolume'
+anchore_remote_config_path: '/home/anchore/aevolume/config/'
+anchore_remote_config_file: 'config.yaml'
+docker_remote_config_file: 'docker-compose.yml'
