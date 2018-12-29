@@ -1,15 +1,3 @@
 ---
-# handlers file for provision/roles/hardening_debian
+# handlers file for provision/roles/ansible-anchore-jenkins
 
-- name: restart sshd
-  service:
-    name: ssh
-    state: restarted
-
-- name: restart fail2ban
-  service:
-    name: fail2ban
-    state: restarted
-
-- name: reload kernel param
-  shell: /sbin/sysctl -p 

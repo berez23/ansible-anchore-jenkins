@@ -1,8 +1,8 @@
 ---
 # tasks file for provision/roles/ansible-anchore-jenkins
-- name: system upgrade 
+- name: System upgrade
   include: updatedpack.yml
-- name: Installing requriment -  Docker and Docker-compose 
-  include: requriments.yml
-- name: configure docker 
+- name: Installing requirement -  Docker and Docker-compose
+  include: requirement.yml
+- name: Configure docker
   include: docker.yml
